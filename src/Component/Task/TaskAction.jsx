@@ -1,6 +1,6 @@
 import React from 'react';
 
-function TaskAction({onTaskAdd}) {
+function TaskAction({onTaskAdd, onDeleteAll}) {
     /**
      * TaskAction component renders the action buttons for managing tasks.
      * It includes buttons to add a new task and delete all tasks.
@@ -15,7 +15,7 @@ function TaskAction({onTaskAdd}) {
             <div className="flex items-center space-x-5">
                 <button  className="rounded-md bg-blue-500 px-3.5 py-2.5 text-sm font-semibold cursor-pointer" onClick={handleAddTask}>Add Task
                 </button>
-                <button className="rounded-md bg-red-500 px-3.5 py-2.5 text-sm font-semibold">Delete All
+                <button className="rounded-md bg-red-500 px-3.5 py-2.5 text-sm font-semibold cursor-pointer" onClick={onDeleteAll}>Delete All
                 </button>
             </div>
         </div>
