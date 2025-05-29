@@ -5,51 +5,20 @@ import TaskList from "./Task/TaskList.jsx";
 import TaskModal from "./Task/TaskModal.jsx";
 
 function TaskBoard() {
+    const defaultTask ={
+        id: crypto.randomUUID(),
+        title: "Learn Express.js",
+        description: "Learn Express.js from scratch",
+        tags: ["Express.js", "Node.js"],
+        priority: "High"
+    }
     const [showModal, setShowModal] = useState(false);
-
-    /**
-     * TaskBoard component renders the task management section of the application.
-     * It includes a search box, task actions (like adding or deleting tasks), and a list of tasks.
-     * The component is styled with Tailwind CSS for a modern look.
-     */
-    const [tasks, setTask] = useState([
-        {
-            id: crypto.randomUUID(),
-            title: "Learn React",
-            description: "Learn React from scratch",
-            tags:["React", "JavaScript"],
-            priority: "Medium"
-
-        },
-        {
-            id: crypto.randomUUID(),
-            title: "Learn Tailwind CSS",
-            description: "Learn Tailwind CSS from scratch",
-            tags: ["Tailwind CSS", "CSS"],
-            priority: "High"
-        },
-        {
-            id: crypto.randomUUID(),
-            title: "Learn JavaScript",
-            description: "Learn JavaScript from scratch",
-            tags: ["JavaScript" , "Programming", "Web Development"],
-            priority: "Low"
-        },
-        {
-            id: crypto.randomUUID(),
-            title: "Learn Node.js",
-            description: "Learn Node.js from scratch",
-            tags: ["Node.js", "JavaScript"],
-            priority: "Medium"
-        },
-        {
-            id: crypto.randomUUID(),
-            title: "Learn Express.js",
-            description: "Learn Express.js from scratch",
-            tags: ["Express.js", "Node.js"],
-            priority: "High"
-        }
-    ])
+    const [tasks, setTask] = useState([defaultTask])
+    console.log("Tasks:", tasks);
+    const handleAddTask = (task) => {
+        setTask([...tasks, task]);
+        setShowModal(false);
+    }
     return (
         <section className="mb-20" id="tasks">
             <div className="container mx-auto">
@@ -62,7 +31,7 @@ function TaskBoard() {
                     <>
                         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"></div>
                         <div className={"fixed inset-0 z-50 flex items-center justify-center top-0 left-0"}>
-                            <TaskModal handleModal={setShowModal}/>
+                            <TaskModal handleModal={setShowModal} onSave={handleAddTask}/>
                         </div>
                     </>
                 )}
