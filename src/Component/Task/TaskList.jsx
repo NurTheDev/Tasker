@@ -1,6 +1,6 @@
 import React from 'react';
 
-function TaskList({tasks}) {
+function TaskList({tasks, onEdit}) {
     return (
         <table className="table-fixed overflow-auto xl:w-full">
             <thead>
@@ -47,8 +47,8 @@ function TaskList({tasks}) {
                     <td className="text-center">{task.priority}</td>
                     <td>
                         <div className="flex items-center justify-center space-x-3">
-                            <button className="text-red-500">Delete</button>
-                            <button className="text-blue-500">Edit</button>
+                            <button className="text-red-500" >Delete</button>
+                            <button className="text-blue-500 cursor-pointer" onClick={()=> onEdit(task)}>Edit</button>
                         </div>
                     </td>
                 </tr>

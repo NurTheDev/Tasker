@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {IoMdCloseCircleOutline} from "react-icons/io";
 
-function TaskModal({handleModal, onSave}) {
-    const [addTask, setAddTask] = useState({
+function TaskModal({handleModal, onSave, tasks}) {
+    const [addTask, setAddTask] = useState(tasks || {
         id: crypto.randomUUID(),
         title: '',
         description: '',
@@ -14,7 +14,7 @@ function TaskModal({handleModal, onSave}) {
         const { name, value } = e.target;
         setAddTask({ ...addTask, [name]: name === "tags" ? value.split(","): value });
     }
-    console.log("Add Task:", addTask);
+    const [isEdit, setIsEdit] = useState(Object.is(tasks, null));
     return (
     <form
             className="mx-auto my-10 w-full max-w-[740px] rounded-xl border border-[#FEFBFB]/[36%] bg-[#191D26] p-9 max-md:px-4 lg:my-20 lg:p-11"
@@ -23,7 +23,7 @@ function TaskModal({handleModal, onSave}) {
                 <h2
                     className="text-center lg:text-[28px]"
                 >
-                    Add New Task
+                    {isEdit ? "Add Task" : "Update Task"}
                 </h2>
                 <span className={"cursor-pointer text-[#FEFBFB]/[36%] lg:text-3xl hover:text-[#FEFBFB]/[60%]" +
                     " transition-all"} onClick={() => handleModal(false)}>
@@ -88,9 +88,9 @@ function TaskModal({handleModal, onSave}) {
                             onChange={handleInput}
                         >
                             <option value="">Select Priority</option>
-                            <option value="low">Low</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
                         </select>
                     </div>
                 </div>
@@ -100,12 +100,12 @@ function TaskModal({handleModal, onSave}) {
                 <button
                     type="submit"
                     onClick={(e)=> {
-                        onSave(addTask)
                         e.preventDefault();
+                        onSave(addTask, isEdit);
                     }}
                     className="rounded bg-blue-600 px-4 py-2 text-white transition-all hover:opacity-80"
                 >
-                    Create new Task
+                    {isEdit ? "Create Task" : "Save Changes"}
                 </button>
             </div>
         </form>

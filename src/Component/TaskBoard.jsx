@@ -14,10 +14,27 @@ function TaskBoard() {
     }
     const [showModal, setShowModal] = useState(false);
     const [tasks, setTask] = useState([defaultTask])
-    console.log("Tasks:", tasks);
-    const handleAddTask = (task) => {
-        setTask([...tasks, task]);
+    const [editTask, setEditTask] = useState(null);
+    const handleAddTask = (task, isEdit) => {
+        if(isEdit){
+            setTask([...tasks, task]);
+        }
+        else{
+            const updatedTask = tasks.map((t)=>{
+                if(t.id === task.id){
+                    return task;
+                }
+                return t;
+            })
+            setTask(updatedTask);
+        }
+        console.log("from Edit Task:", isEdit);
         setShowModal(false);
+    }
+    const handleEditTask = (task)=>{
+        setEditTask(task);
+        setShowModal(true);
+        console.log("Edit Task:", isEdit);
     }
     return (
         <section className="mb-20" id="tasks">
@@ -31,7 +48,7 @@ function TaskBoard() {
                     <>
                         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"></div>
                         <div className={"fixed inset-0 z-50 flex items-center justify-center top-0 left-0"}>
-                            <TaskModal handleModal={setShowModal} onSave={handleAddTask}/>
+                            <TaskModal handleModal={setShowModal} onSave={handleAddTask} tasks={editTask}/>
                         </div>
                     </>
                 )}
@@ -39,7 +56,7 @@ function TaskBoard() {
                     className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
                     <TaskAction onTaskAdd={setShowModal}/>
                     <div className="overflow-auto">
-                        <TaskList tasks={tasks}/>
+                        <TaskList tasks={tasks} onEdit={handleEditTask}/>
                     </div>
                 </div>
             </div>
