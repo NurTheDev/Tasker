@@ -15,7 +15,9 @@ function TaskBoard() {
         isFavorite: false
     }
     const [showModal, setShowModal] = useState(false);
-    const [tasks, setTask] = useState([defaultTask])
+    const [tasks, setTask] = useState([])
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredTasks, setFilteredTasks] = useState([]);
     const [editTask, setEditTask] = useState(null);
     const handleAddTask = (task, isEdit) => {
         if (isEdit) {
@@ -61,12 +63,25 @@ function TaskBoard() {
         })
         setTask(updatedTasks);
     }
+    const handleSearchTask = (searchTerm) => {
+        setSearchTerm(searchTerm);
+        
+        if (searchTerm === "") {
+            setFilteredTasks([]);
+            return;
+        }
+        
+        const searchedTasks = tasks.filter((t) => 
+            t.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredTasks(searchedTasks);
+    }
     return (
         <section className="mb-20" id="tasks">
             <div className="container mx-auto">
                 {/*Search Box*/}
                 <div className="p-2 flex justify-end">
-                    <SearchTask/>
+                    <SearchTask onSearch={handleSearchTask}/>
                 </div>
                 {/*Search Box Ends*/}
                 {showModal && (
@@ -81,9 +96,16 @@ function TaskBoard() {
                     className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
                     <TaskAction onTaskAdd={setShowModal} onDeleteAll={handleDeleteAllTasks}/>
                     <div className="overflow-auto">
-                        {tasks.length > 0 ?
-                            <TaskList tasks={tasks} onEdit={handleEditTask} onDelete={handleDelteTask} onFavorite={handleFavoriteTask}/> :
-                            <EmptyMessage/>}
+                        {tasks.length > 0 ? (
+                            <TaskList 
+                                tasks={searchTerm ? filteredTasks : tasks} 
+                                onEdit={handleEditTask} 
+                                onDelete={handleDelteTask} 
+                                onFavorite={handleFavoriteTask}
+                            />
+                        ) : (
+                            <EmptyMessage/>
+                        )}
                     </div>
                 </div>
             </div>
